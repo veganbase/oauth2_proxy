@@ -1,0 +1,12 @@
+FROM gcr.io/veganbaseapp/ms_base_builder:1.11.5 AS builder
+ENV GO111MODULE=on
+ARG appname=app
+
+ARG appname=app
+
+RUN mkdir -p /app
+WORKDIR /app
+ADD . .
+RUN go mod verify
+RUN go get -d -v
+RUN GOARCH=amd64 GOOS=linux CGO_ENABLED=0 go build -ldflags="-w -s"  -o /app/app
